@@ -1,14 +1,21 @@
 import React, { useState, useRef } from 'react';
 import TextInputWithLabel from '../shared/TextInputWithLabel';
 
-function TodoForm({ onAddTodo }) {
+function TodoForm({ onAddTodo, isSaving }) {
   
   const [workingTodoTitle, setWorkingTodoTitle] = useState("");
   const todoTitleInput = useRef("");
   
   const handleAddTodo = (event) => {
     event.preventDefault();
-    onAddTodo(workingTodoTitle);
+    
+    // Create a todo object instead of just passing the title
+    const newTodo = {
+      title: workingTodoTitle,
+      isCompleted: false
+    };
+    
+    onAddTodo(newTodo);
     setWorkingTodoTitle("");
     todoTitleInput.current.focus();
   };
@@ -22,7 +29,9 @@ function TodoForm({ onAddTodo }) {
         value={workingTodoTitle}
         onChange={(event) => setWorkingTodoTitle(event.target.value)}
       />
-      <button type="submit" disabled={workingTodoTitle === ""}>Add Todo</button>
+      <button type="submit" disabled={workingTodoTitle.trim() === ''}>
+        {isSaving ? 'Saving...' : 'Add Todo'}
+      </button>
     </form>
   );
 }
