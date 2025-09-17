@@ -1,20 +1,8 @@
 import './App.css'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import TodoList from './features/TodoList/TodoList';
 import TodoForm from './features/TodoForm';
 import TodosViewForm from './features/TodosViewForm';
-
-
-function encodeUrl(baseUrl, { sortField, sortDirection, queryString }) {
-    let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
-    let searchQuery = "";
- 
-    if (queryString) {
-        searchQuery = `&filterByFormula=SEARCH("${queryString}",+title)`;
-    }
-    
-    return encodeURI(`${baseUrl}?${sortQuery}${searchQuery}`);
-}
 
 function App() {
    
@@ -34,63 +22,80 @@ function App() {
     const baseUrl = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
     const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
+    // Move encodeUrl function into useCallback hook
+    const encodeUrl = useCallback(() => {
+        let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
+        let searchQuery = "";
+     
+        if (queryString) {
+            searchQuery = `&filterByFormula=SEARCH("${queryString}",+title)`;
+        }
+        
+        return encodeURI(`${baseUrl}?${sortQuery}${searchQuery}`);
+    }, [baseUrl, sortField, sortDirection, queryString]);
+
     
     useEffect(() => {
-        const fetchTodos = async () => {
+        // Add 500ms delay to prevent API calls on every keystroke
+        const timeoutId = setTimeout(() => {
+            const fetchTodos = async () => {
+                
+                setIsLoading(true);
+                
+              
+                const url = encodeUrl(); // Remove arguments - now handled by useCallback dependencies
+                
+                
+                const options = {
+                    method: "GET",
+                    headers: {
+                        "Authorization": token
+                    }
+                };
+
+                try {
+                   
+                    const resp = await fetch(url, options);
+                    
+                   
+                    if (!resp.ok) {
+                        throw new Error(resp.message);
+                    }
+                 
+                    const response = await resp.json();
+                    
             
-            setIsLoading(true);
-            
-          
-            const url = encodeUrl(baseUrl, { sortField, sortDirection, queryString });
-            
-            
-            const options = {
-                method: "GET",
-                headers: {
-                    "Authorization": token
+                    const fetchedTodos = response.records.map((record) => {
+                        const todo = {
+                            id: record.id,
+                            ...record.fields
+                        };
+                        
+                      
+                        if (!todo.isCompleted) {
+                            todo.isCompleted = false;
+                        }
+                        
+                        return todo;
+                    });
+
+                    setTodoList(fetchedTodos);
+
+                } catch (error) {
+
+                    setErrorMessage(error.message);
+                } finally {
+                  
+                    setIsLoading(false);
                 }
             };
 
-            try {
-               
-                const resp = await fetch(url, options);
-                
-               
-                if (!resp.ok) {
-                    throw new Error(resp.message);
-                }
-             
-                const response = await resp.json();
-                
-        
-                const fetchedTodos = response.records.map((record) => {
-                    const todo = {
-                        id: record.id,
-                        ...record.fields
-                    };
-                    
-                  
-                    if (!todo.isCompleted) {
-                        todo.isCompleted = false;
-                    }
-                    
-                    return todo;
-                });
+            fetchTodos();
+        }, 500); // 500ms delay
 
-                setTodoList(fetchedTodos);
-
-            } catch (error) {
-
-                setErrorMessage(error.message);
-            } finally {
-              
-                setIsLoading(false);
-            }
-        };
-
-      
-        fetchTodos();
-    }, [sortField, sortDirection, queryString, baseUrl, token]); 
+        // Cleanup function to clear timeout if dependencies change before timeout completes
+        return () => clearTimeout(timeoutId);
+    }, [encodeUrl, token]); // Updated dependencies - removed individual states since they're now handled by encodeUrl useCallback
 
     const addTodo = async (newTodo) => {
        
