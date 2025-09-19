@@ -1,0 +1,65 @@
+/* TodoListItem.module.css */
+
+.todoItem {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e9ecef;
+  margin-bottom: 8px;
+}
+
+.todoItem:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.todoForm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.todoTitle {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  flex: 1;
+  min-width: 200px;
+}
+
+.todoTitle:hover {
+  background-color: #f8f9fa;
+}
+
+.completedTitle {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+.checkbox {
+  margin-right: 8px;
+  transform: scale(1.2);
+}
+
+.editingControls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.saveButton {
+  background-color: #28a745;
+}
+
+.saveButton:hover {
+  background-color: #218838;
+}
+
+.cancelButton {
+  background-color: #6c757d;
+}
+
+.cancelButton:hover {
+  background-color: #5a6268;
+}

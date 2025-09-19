@@ -1,4 +1,5 @@
 import './App.css'
+import styles from './App.module.css'
 import { useState, useEffect, useCallback } from 'react';
 import TodoList from './features/TodoList/TodoList';
 import TodoForm from './features/TodoForm';
@@ -22,7 +23,7 @@ function App() {
     const baseUrl = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
     const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
-    // Move encodeUrl function into useCallback hook
+   
     const encodeUrl = useCallback(() => {
         let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
         let searchQuery = "";
@@ -43,7 +44,7 @@ function App() {
                 setIsLoading(true);
                 
               
-                const url = encodeUrl(); // Remove arguments - now handled by useCallback dependencies
+                const url = encodeUrl(); 
                 
                 
                 const options = {
@@ -91,7 +92,7 @@ function App() {
             };
 
             fetchTodos();
-        }, 500); // 500ms delay
+        }, 500);
 
         // Cleanup function to clear timeout if dependencies change before timeout completes
         return () => clearTimeout(timeoutId);
@@ -266,7 +267,7 @@ function App() {
             }
 
         } catch (error) {
-            // Log error and revert the todo back to original state
+            
             console.log(error);
             setErrorMessage(`${error.message}. Reverting todo...`);
             
@@ -286,7 +287,7 @@ function App() {
     };
 
     return (
-        <div>
+        <div className={styles.container}>
             <h1>Todo List</h1>
             <TodoForm onAddTodo={addTodo} isSaving={isSaving} /> 
             {/* Pass isLoading as a prop to TodoList */}
@@ -307,7 +308,7 @@ function App() {
             />
             {/* Display error message if there is one */}
             {errorMessage && (
-                <div>
+                <div className={styles.errorMessage}>
                     <hr />
                     <p>{errorMessage}</p>
                     <button onClick={() => setErrorMessage("")}>Dismiss</button>
