@@ -1,0 +1,81 @@
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  font-weight: bold;
+}
+
+body {
+  font-family: 'Verdana', 'Geneva', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+button {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+button[type="button"] {
+  background-color: #6c757d;
+}
+
+button[type="button"]:hover {
+  background-color: #5a6268;
+}
+
+
+input[type="text"], 
+select {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  margin: 4px;
+  transition: border-color 0.2s ease;
+}
+
+input[type="text"]:focus, 
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+
+label {
+  font-weight: 500;
+  margin-right: 8px;
+  color: #333;
+}
+
+
+form {
+  margin: 20px 0;
+}
+
+form > div {
+  margin-bottom: 15px;
+}

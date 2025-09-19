@@ -1,0 +1,40 @@
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  margin-top: 20px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+}
+
+.errorMessage {
+  border: 2px solid #dc3545;
+  border-radius: 6px;
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.errorMessage p {
+  margin: 0 0 10px 0;
+}
+
+.errorMessage button {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.errorMessage button:hover {
+  background-color: #c82333;
+}

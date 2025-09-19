@@ -1,13 +1,14 @@
 import React from 'react';
+import styles from './TodoList.module.css';
 import TodoListItem from "./TodoListItem";
 
 function TodoList({ todos, onCompleteTodo, onUpdateTodo }) {
   return (
     <>
       {todos.length === 0 ? (
-        <p>Add todo above to get started</p>
+        <p className={styles.emptyMessage}>Add todo above to get started</p>
       ) : (
-        <ul>
+        <ul className={styles.todoList}>
           {todos.map(todo => (
             <TodoListItem 
               key={todo.id} 
